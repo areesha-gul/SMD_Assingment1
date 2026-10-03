@@ -10,27 +10,25 @@ function getPercent(course) {
   return (course.attended / course.total) * 100;
 }
 
-// 3 levels: Safe (80+), Warning (75-79), Low (below 75)
+// 2 levels: Safe (80 or more), Low (below 80)
 function getStatus(course) {
   const p = getPercent(course);
   if (p >= 80) return 'Safe';
-  if (p >= 75) return 'Warning';
   return 'Low';
 }
 
 function getColor(status) {
   if (status === 'Safe') return '#3E8E5A';
-  if (status === 'Warning') return '#D9822B';
   return '#C0392B';
 }
 
 function classesCanSkip(course) {
-  const n = Math.floor(course.attended / 0.75 - course.total);
+  const n = Math.floor(course.attended / 0.8 - course.total);
   return n < 0 ? 0 : n;
 }
 
 function classesNeeded(course) {
-  return Math.ceil(3 * course.total - 4 * course.attended);
+  return Math.ceil(4 * course.total - 5 * course.attended);
 }
 
 // marks percentage of one course (null if no marks yet)
@@ -86,7 +84,7 @@ function CourseCard({ course, onPresent, onAbsent, onOpen }) {
 
       {status === 'Low' ? (
         <Text style={[styles.tip, { color: '#C0392B' }]}>
-          Warning! Attend the next {classesNeeded(course)} class(es) to reach 75%.
+          Warning! Attend the next {classesNeeded(course)} class(es) to reach 80%.
         </Text>
       ) : (
         <Text style={styles.tip}>You can skip {classesCanSkip(course)} more class(es).</Text>
@@ -224,7 +222,6 @@ export default function App() {
   // ---------- HOME / DASHBOARD ----------
   if (screen === 'home') {
     const safeCount = courses.filter((c) => getStatus(c) === 'Safe').length;
-    const warnCount = courses.filter((c) => getStatus(c) === 'Warning').length;
     const lowCourses = courses.filter((c) => getStatus(c) === 'Low');
 
     let totalPercent = 0;
@@ -250,7 +247,7 @@ export default function App() {
           </View>
         ) : (
           <View style={styles.card}>
-            <Text style={styles.courseName}>No course is below 75%. Great!</Text>
+            <Text style={styles.courseName}>No course is below 80%. Great!</Text>
           </View>
         )}
 
@@ -273,7 +270,6 @@ export default function App() {
             <PieChart
               data={[
                 { name: 'Safe', population: safeCount, color: '#3E8E5A', legendFontColor: '#333', legendFontSize: 13 },
-                { name: 'Warning', population: warnCount, color: '#D9822B', legendFontColor: '#333', legendFontSize: 13 },
                 { name: 'Low', population: lowCourses.length, color: '#C0392B', legendFontColor: '#333', legendFontSize: 13 },
               ]}
               width={screenWidth}
@@ -284,7 +280,7 @@ export default function App() {
               paddingLeft="15"
             />
 
-            <Text style={styles.subtitle}>Overall attendance vs 75% goal</Text>
+            <Text style={styles.subtitle}>Overall attendance vs 80% goal</Text>
             <View style={[styles.card, styles.center]}>
               <ProgressChart
                 data={{ labels: ['Average'], data: [Math.min(average / 100, 1)] }}
@@ -297,7 +293,7 @@ export default function App() {
               />
               <Text style={styles.percent}>{average.toFixed(0)}% average</Text>
               <Text style={styles.grey}>
-                {average >= 75 ? 'You are above the 75% goal.' : 'You are below the 75% goal.'}
+                {average >= 80 ? 'You are above the 80% goal.' : 'You are below the 80% goal.'}
               </Text>
             </View>
           </View>
@@ -333,7 +329,7 @@ export default function App() {
         <TextInput style={styles.input} placeholder="Search course..." value={search} onChangeText={setSearch} />
 
         <View style={styles.row}>
-          {['All', 'Safe', 'Warning', 'Low'].map((f) => (
+          {['All', 'Safe', 'Low'].map((f) => (
             <TouchableOpacity
               key={f}
               style={[styles.chip, filter === f && styles.chipActive]}

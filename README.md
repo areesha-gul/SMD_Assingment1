@@ -1,15 +1,15 @@
 # MySemester – Attendance & Marks Tracker
 
 **Course:** Software for Mobile Devices – Assignment 1
-**Student:** [Areesha Gul] ([I23-3080])
+**Student:** [Areesha Gul] ([I233080])
 **Built with:** React Native (Expo), JavaScript, react-native-chart-kit
 
 ## 1. Problem
 
 On the university student portal (FLEX), attendance is shown only as a raw number or percentage. Students still have to work out for themselves:
 
-- "How many classes can I still miss and stay above 75%?"
-- "How many classes do I need to attend to get back to 75%?"
+- "How many classes can I still miss and stay above 80%?"
+- "How many classes do I need to attend to get back to 80%?"
 
 Students often find out they are short on attendance too late.
 
@@ -21,11 +21,11 @@ MySemester is a mobile app that tracks attendance and marks for each course. It 
 
 | Feature | Description |
 |---|---|
-| Dashboard | Summary boxes (courses, average attendance, at-risk courses) and a warning card listing courses below 75% |
-| Charts (react-native-chart-kit) | Bar Chart (attendance % per course), Pie Chart (Safe / Warning / Low courses), Progress Chart (overall attendance) |
+| Dashboard | Summary boxes (courses, average attendance, at-risk courses) and a warning card listing courses below 80% |
+| Charts (react-native-chart-kit) | Bar Chart (attendance % per course), Pie Chart (Safe / Low courses), Progress Chart (overall attendance) |
 | Attendance tracking | Present / Absent buttons update the percentage and status immediately |
-| Smart recommendations | Shows how many classes can be skipped, or how many must be attended to reach 75% |
-| Status levels | Safe (80%+), Warning (75–79%), Low (below 75%), each with its own colour |
+| Smart recommendations | Shows how many classes can be skipped, or how many must be attended to reach 80% |
+| Status levels | Safe (80% or more) and Low (below 80%), each with its own colour |
 | Search, filter, sort | Search by name, filter by status, sort by lowest attendance or A–Z |
 | Marks & grades | Add quiz/assignment/exam marks per course; shows percentage and grade |
 | Add / delete course | Form with validation; delete asks for confirmation |
@@ -44,8 +44,8 @@ MySemester is a mobile app that tracks attendance and marks for each course. It 
 Let `attended` = classes attended and `total` = classes held.
 
 - Attendance % = `attended / total × 100`
-- Classes that can still be skipped = `floor(attended / 0.75 − total)`
-- Classes needed to reach 75% = `ceil(3 × total − 4 × attended)`
+- Classes that can still be skipped = `floor(attended / 0.8 − total)`
+- Classes needed to reach 80% = `ceil(4 × total − 5 × attended)`
 
 ## 6. Setup and Run
 
